@@ -1183,4 +1183,237 @@ padding:20px;
 
 
 <!-- PART 3 IS PASTED BELOW THIS LINE -->
+    <script>
+
+let cart = [];
+
+/* =========================
+   ADD TO CART
+========================= */
+
+function addToCart(name, price){
+
+    cart.push({
+        name:name,
+        price:price
+    });
+
+    updateCart();
+
+    document.getElementById("cartModal").style.display = "block";
+}
+
+
+/* =========================
+   UPDATE CART
+========================= */
+
+function updateCart(){
+
+    const count = document.getElementById("cartCount");
+
+    count.innerText = cart.length;
+
+    const items = document.getElementById("cartItems");
+
+    const totalBox = document.getElementById("cartTotal");
+
+    if(cart.length === 0){
+
+        items.innerHTML = `
+            <p style="color:#777;">
+                Your cart is empty.
+            </p>
+        `;
+
+        totalBox.innerHTML = "";
+
+        return;
+    }
+
+    let total = 0;
+
+    items.innerHTML = "";
+
+    cart.forEach((item,index)=>{
+
+        total += item.price;
+
+        items.innerHTML += `
+
+            <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:10px;
+            padding:13px 0;
+            border-bottom:1px solid #eee;
+            ">
+
+                <div>
+
+                    <strong style="color:#214d2b;">
+                        ${item.name}
+                    </strong>
+
+                    <div style="
+                    color:#a7740f;
+                    font-weight:700;
+                    margin-top:3px;
+                    ">
+                        ₹${item.price}
+                    </div>
+
+                </div>
+
+                <button
+                onclick="removeFromCart(${index})"
+                style="
+                border:0;
+                background:#f3e8d0;
+                color:#214d2b;
+                border-radius:6px;
+                padding:7px 10px;
+                font-weight:bold;
+                ">
+                    Remove
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+    totalBox.innerHTML = `
+        Total: ₹${total}
+    `;
+}
+
+
+/* =========================
+   REMOVE FROM CART
+========================= */
+
+function removeFromCart(index){
+
+    cart.splice(index,1);
+
+    updateCart();
+}
+
+
+/* =========================
+   OPEN CART
+========================= */
+
+function openCart(){
+
+    document.getElementById("cartModal").style.display = "block";
+
+    updateCart();
+}
+
+
+/* =========================
+   CLOSE CART
+========================= */
+
+function closeCart(){
+
+    document.getElementById("cartModal").style.display = "none";
+}
+
+
+/* =========================
+   WHATSAPP ORDER
+========================= */
+
+function orderOnWhatsApp(){
+
+    if(cart.length === 0){
+
+        alert("Please add a product to your cart first.");
+
+        return;
+    }
+
+    let message =
+    "Hello Samarth Organic!%0A%0AI want to place an order:%0A%0A";
+
+    let total = 0;
+
+    cart.forEach((item,index)=>{
+
+        message +=
+        (index + 1) +
+        ". " +
+        item.name +
+        " - ₹" +
+        item.price +
+        "%0A";
+
+        total += item.price;
+
+    });
+
+    message +=
+    "%0A*Total: ₹" +
+    total +
+    "*";
+
+    message +=
+    "%0A%0APlease share the payment and delivery details.";
+
+    window.open(
+        "https://wa.me/918780708021?text=" + message,
+        "_blank"
+    );
+}
+
+
+/* =========================
+   CLOSE CART OUTSIDE BOX
+========================= */
+
+document.getElementById("cartModal").addEventListener(
+    "click",
+    function(e){
+
+        if(e.target === this){
+
+            closeCart();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   SMALL SCROLL EFFECT
+========================= */
+
+window.addEventListener("scroll",function(){
+
+    const header = document.querySelector("header");
+
+    if(window.scrollY > 30){
+
+        header.style.boxShadow =
+        "0 5px 20px rgba(33,77,43,.08)";
+
+    }else{
+
+        header.style.boxShadow = "none";
+
+    }
+
+});
+
+
+</script>
+
+</body>
+</html>
   </main>
